@@ -1,7 +1,4 @@
-import {test} from './functions'
+import {test, test2} from './functions'
 
-module.exports = {
-  test
-}
-
+export {test, test2}
 
