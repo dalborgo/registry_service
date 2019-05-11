@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/dalborgo/registry_service#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "esm": "^3.2.22"
   }
 }

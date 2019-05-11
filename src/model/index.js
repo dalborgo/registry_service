@@ -1,5 +1,5 @@
 import util from "util"
-
+import { hashSync, compare } from 'bcryptjs'
 export function export_model(ottoman, getFunctions){
   const _throw = m => {throw m}
   const User = ottoman.model('User', {
