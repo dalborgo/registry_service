@@ -1,4 +1,4 @@
 import {test, test2} from './functions'
 
-export {test, test2}
+export {test, test2 }
 
