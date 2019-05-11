@@ -3,5 +3,5 @@ export function test () {
 }
 
 export function test2 () {
-  console.log('TEST2')
+  console.log('TEST2 ')
 }
