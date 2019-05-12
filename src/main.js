@@ -1,5 +1,5 @@
-import {test, test2} from './functions'
+import {test} from './functions'
 import {export_model} from './model'
 
-export {test, test2, export_model}
+export {test, export_model}
 
