@@ -1,4 +1,5 @@
 import { hashSync, compare } from 'bcryptjs'
+import { gql } from 'apollo-server-express'
 export function export_model(ottoman, getFunctions){
   const _throw = m => {throw m}
   const Registry = getFunctions.call(ottoman.model('REGISTRY', {
@@ -44,4 +45,95 @@ export function export_model(ottoman, getFunctions){
     return compare(password, this.password)
   }
   return Registry
+}
+
+export function export_typeDef(){
+  return gql`
+    extend type Query {
+      registry(id: ID!): Registry @guest
+      registries(limit: Int, skip: Int): [Registry!]! @guest
+    }
+
+    extend type Mutation {
+      addRegistry(input: AddRegistryInput): Registry @guest
+      editRegistry(input: EditRegistryInput!): Registry @guest
+      delRegistry(id: ID!): Registry @guest
+      newPassRegistry(id: ID!, password: String!): Registry @guest
+      signUpRegistry(email: String!, username: String!, name: String, password: String!): Registry @guest
+      signInRegistry(username: String!, password: String!): Registry @guest
+      signOutRegistry: Boolean @auth
+    }
+
+    input AddRegistryInput {
+      username: String!
+      password: String!
+      surname: String
+      name: String
+      gender: String
+      birth_day: String,
+      birth_city: Int
+      cf: String
+      vat: String
+      nationality: String
+      address: String
+      arress_number: String
+      state: String
+      city: String
+      zip: String
+      phone: String
+      cellular: String
+      email: String!
+      pec: String
+      sdi: String
+    }
+
+    input EditRegistryInput {
+      username: String!
+      password: String!
+      surname: String
+      name: String
+      gender: String
+      birth_day: String,
+      birth_city: Int
+      cf: String
+      vat: String
+      nationality: String
+      address: String
+      arress_number: String
+      state: String
+      city: String
+      zip: String
+      phone: String
+      cellular: String
+      email: String!
+      pec: String
+      sdi: String
+    }
+
+    type Registry{
+      id: ID!
+      username: String!
+      password: String!
+      surname: String
+      name: String
+      gender: String
+      birth_day: String,
+      birth_city: Int
+      cf: String
+      vat: String
+      nationality: String
+      address: String
+      arress_number: String
+      state: String
+      city: String
+      zip: String
+      phone: String
+      cellular: String
+      email: String!
+      pec: String
+      sdi: String
+      createdAt: String!
+      updatedAt: String!
+    }
+  `
 }
