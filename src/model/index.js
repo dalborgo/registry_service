@@ -1,7 +1,7 @@
 import { hashSync, compare } from 'bcryptjs'
 export function export_model(ottoman, getFunctions){
   const _throw = m => {throw m}
-  const Registry = ottoman.model('REGISTRY', {
+  const Registry = getFunctions.call(ottoman.model('REGISTRY', {
     username: {type: 'string', readonly: true},
     password: 'string',
     surname: 'string', //Se sesso=M,F
@@ -13,7 +13,7 @@ export function export_model(ottoman, getFunctions){
     vat: 'string',//Se sesso=PG
     nationality: 'string',//Restituito da File excel Tabelle (Cittadinanza)
     address: 'string',
-    arress_number: 'string',
+    address_number: 'string',
     state: 'string',//Restituito da File excel Tabelle (Comuni)
     city: 'string',//Restituito da File excel Tabelle (Comuni)
     zip: 'string',
@@ -26,15 +26,14 @@ export function export_model(ottoman, getFunctions){
     updatedAt: 'Date'
   }, {
     id: 'username'
-  })
-  getFunctions.call(Registry)
+  }))
 
   Registry.pre('save', function (user, next) {
     //fixme capire come non ricriptare la password
     if (this.password && this.password.length !== 60) {
       this.password = hashSync(this.password, 10)
     }
-    this.updateAt = new Date()
+    this.updatedAt = new Date()
     next()
   })
 
