@@ -123,7 +123,7 @@ export function export_typeDef(){
       vat: String
       nationality: String
       address: String
-      arress_number: String
+      address_number: String
       state: String
       city: String
       zip: String
