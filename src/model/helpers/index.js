@@ -18,9 +18,11 @@ export const clearUser = input => {
 }
 
 const password = Joi.string().min(8).max(50).regex(/^(?=\S*[a-z])(?=\S*[A-Z]).*$/).required().label('Password').options({
-  string: {
-    regex: {
-      base: 'must have at least one lowercase letter, one uppercase letter.'
+  language: {
+    string: {
+      regex: {
+        base: 'must have at least one lowercase letter, one uppercase letter.'
+      }
     }
   }
 })
