@@ -18,8 +18,9 @@
   },
   "homepage": "https://github.com/dalborgo/registry_service#readme",
   "dependencies": {
-    "apollo-server-express": "^2.5.0",
     "bcryptjs": "^2.4.3",
-    "esm": "^3.2.25"
+    "esm": "^3.2.25",
+    "joi": "^14.3.1",
+    "lodash": "^4.17.11"
   }
 }

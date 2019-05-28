@@ -1,5 +1,7 @@
 import { hashSync, compare } from 'bcryptjs'
-import { gql } from 'apollo-server-express'
+import Joi from 'joi'
+import { changeUser, clearUser, notNull, updateFields } from './helpers'
+
 export function export_model(ottoman, getFunctions){
   const _throw = m => {throw m}
   const Registry = getFunctions.call(ottoman.model('REGISTRY', {
@@ -47,7 +49,49 @@ export function export_model(ottoman, getFunctions){
   return Registry
 }
 
-export function export_typeDef(){
+export function export_resolver(registry){
+  return {
+    Query: {
+      registries: async (root, args, {req}, info) => {
+        return registry.search({}, notNull(args))
+      },
+        registry: (root, {id}, {req}, info) => {
+        return registry.byId(id)
+      }
+    },
+    Mutation: {
+      delRegistry: async (root, args, {req}, info) => {
+        const user = await registry.byId(args.id)
+        await user.del()
+        return user
+      },
+        editRegistry: async (root, {input}, {req}, info) => {
+        const user = await Registry.byId(input.username)
+        if (user.email !== input.email) {
+          await registry.check_email(input.email)
+        }
+        updateFields(input, user)
+        await user.commit()
+        return user
+      },
+        addRegistry: async (root, {input}, {req}, info) => {
+        const {email, username, password} = input
+        await Joi.validate({email, username, password}, changeUser, {abortEarly: false})
+        await registry.check_email(email)
+        await registry.check_username(username)
+        return registry.createAndSave(clearUser(input))
+      },
+        newPass: async (root, args, {req}, info) => {
+        const user = await registry.byId(args.id)
+        updateFields(args, user, ['id'])
+        await user.commit()
+        return user
+      },
+    }
+  }
+}
+
+export function export_typeDef(gql){
   return gql`
     extend type Query {
       registry(id: ID!): Registry @guest
