@@ -6,6 +6,7 @@ export function export_model(ottoman, getFunctions){
   const _throw = m => {throw m}
   const Registry = getFunctions.call(ottoman.model('REGISTRY', {
     username: {type: 'string', readonly: true},
+    orgId: 'string',
     password: 'string',
     surname: 'string', //Se sesso=M,F
     name: 'string', //Se sesso=M,F;PG
@@ -55,7 +56,7 @@ export function export_resolver(registry){
       registries: async (root, args, {req}, info) => {
         return registry.search({}, notNull(args))
       },
-        registry: (root, {id}, {req}, info) => {
+      registry: (root, {id}, {req}, info) => {
         return registry.byId(id)
       }
     },
@@ -65,7 +66,7 @@ export function export_resolver(registry){
         await user.del()
         return user
       },
-        editRegistry: async (root, {input}, {req}, info) => {
+      editRegistry: async (root, {input}, {req}, info) => {
         const user = await Registry.byId(input.username)
         if (user.email !== input.email) {
           await registry.check_email(input.email)
@@ -74,14 +75,14 @@ export function export_resolver(registry){
         await user.commit()
         return user
       },
-        addRegistry: async (root, {input}, {req}, info) => {
+      addRegistry: async (root, {input}, {req}, info) => {
         const {email, username, password} = input
         await Joi.validate({email, username, password}, changeUser, {abortEarly: false})
         await registry.check_email(email)
         await registry.check_username(username)
         return registry.createAndSave(clearUser(input))
       },
-        newPass: async (root, args, {req}, info) => {
+      newPass: async (root, args, {req}, info) => {
         const user = await registry.byId(args.id)
         updateFields(args, user, ['id'])
         await user.commit()
@@ -110,6 +111,7 @@ export function export_typeDef(gql){
 
     input AddRegistryInput {
       username: String!
+      orgId: String
       password: String!
       surname: String
       name: String
@@ -132,6 +134,7 @@ export function export_typeDef(gql){
     }
 
     input EditRegistryInput {
+      orgId: String
       username: String!
       password: String!
       surname: String
@@ -156,6 +159,7 @@ export function export_typeDef(gql){
 
     type Registry{
       id: ID!
+      orgId: String
       username: String!
       password: String!
       surname: String
