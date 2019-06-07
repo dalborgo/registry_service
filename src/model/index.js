@@ -5,7 +5,8 @@ import { changeUser, clearUser, notNull, updateFields } from './helpers'
 export function export_model(ottoman, getFunctions){
   const _throw = m => {throw m}
   const Registry = getFunctions.call(ottoman.model('REGISTRY', {
-    username: {type: 'string', readonly: true},
+    code: {type: 'string', readonly: true},
+    username: 'string',
     orgId: 'string',
     password: 'string',
     surname: 'string', //Se sesso=M,F
@@ -29,7 +30,7 @@ export function export_model(ottoman, getFunctions){
     createdAt: {type: 'Date', default: Date.now},
     updatedAt: 'Date'
   }, {
-    id: 'username'
+    id: 'code'
   }))
 
   Registry.pre('save', function (user, next) {
@@ -95,17 +96,19 @@ export function export_resolver(registry){
 export function export_typeDef(gql){
   return gql`
     extend type Query {
-      registry(id: ID!): Registry @guest
-      registries(limit: Int, skip: Int): [Registry!]! @guest
+      registry(id: ID!): Registry @auth
+      registry_guest(id: ID!): Registry @auth
+      registries(limit: Int, skip: Int): [Registry!]! @auth
+      registries_guest(limit: Int, skip: Int): [Registry!]! @guest
     }
 
     extend type Mutation {
-      addRegistry(input: AddRegistryInput): Registry @guest
-      editRegistry(input: EditRegistryInput!): Registry @guest
-      delRegistry(id: ID!): Registry @guest
-      newPassRegistry(id: ID!, password: String!): Registry @guest
-      signUpRegistry(email: String!, username: String!, name: String, password: String!): Registry @guest
-      signInRegistry(username: String!, password: String!): Registry @guest
+      addRegistry(input: AddRegistryInput): Registry @auth
+      editRegistry(input: EditRegistryInput!): Registry @auth
+      delRegistry(id: ID!): Registry @auth
+      newPassRegistry(id: ID!, password: String!): Registry @auth
+      signUpRegistry(email: String!, username: String!, name: String, password: String!): Registry @auth
+      signInRegistry(username: String!, password: String!): Registry @auth
       signOutRegistry: Boolean @auth
     }
 
