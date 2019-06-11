@@ -97,7 +97,7 @@ export function export_typeDef(gql){
   return gql`
     extend type Query {
       registry(id: ID!): Registry @auth
-      registry_guest(id: ID!): Registry @auth
+      registry_guest(id: ID!): Registry @guest
       registries(limit: Int, skip: Int): [Registry!]! @auth
       registries_guest(limit: Int, skip: Int): [Registry!]! @guest
     }
