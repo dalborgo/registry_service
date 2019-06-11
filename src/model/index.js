@@ -2,12 +2,16 @@ import { hashSync, compare } from 'bcryptjs'
 import Joi from 'joi'
 import { changeUser, clearUser, notNull, updateFields } from './helpers'
 
-export function export_model(ottoman, getFunctions){
+export function export_model (ottoman, getFunctions) {
   const _throw = m => {throw m}
   const Registry = getFunctions.call(ottoman.model('REGISTRY', {
     code: {type: 'string', readonly: true},
     username: 'string',
-    orgId: 'string',
+    cynation: {
+      orgId: 'string',
+      orgName: 'string',
+      orgEmail: 'string'
+    },
     password: 'string',
     surname: 'string', //Se sesso=M,F
     name: 'string', //Se sesso=M,F;PG
@@ -51,7 +55,7 @@ export function export_model(ottoman, getFunctions){
   return Registry
 }
 
-export function export_resolver(registry){
+export function export_resolver (registry) {
   return {
     Query: {
       registries: async (root, args, {req}, info) => {
@@ -81,6 +85,7 @@ export function export_resolver(registry){
         await Joi.validate({email, username, password}, changeUser, {abortEarly: false})
         await registry.check_email(email)
         await registry.check_username(username)
+        input.code = input.cf || input.vat || values.username
         return registry.createAndSave(clearUser(input))
       },
       newPass: async (root, args, {req}, info) => {
@@ -93,98 +98,109 @@ export function export_resolver(registry){
   }
 }
 
-export function export_typeDef(gql){
+export function export_typeDef (gql) {
   return gql`
-    extend type Query {
-      registry(id: ID!): Registry @auth
-      registry_guest(id: ID!): Registry @guest
-      registries(limit: Int, skip: Int): [Registry!]! @auth
-      registries_guest(limit: Int, skip: Int): [Registry!]! @guest
-    }
+      extend type Query {
+          registry(id: ID!): Registry @auth
+          registry_guest(id: ID!): Registry @guest
+          registries(limit: Int, skip: Int): [Registry!]! @auth
+          registries_guest(limit: Int, skip: Int): [Registry!]! @guest
+      }
 
-    extend type Mutation {
-      addRegistry(input: AddRegistryInput): Registry @auth
-      editRegistry(input: EditRegistryInput!): Registry @auth
-      delRegistry(id: ID!): Registry @auth
-      newPassRegistry(id: ID!, password: String!): Registry @auth
-      signUpRegistry(email: String!, username: String!, name: String, password: String!): Registry @auth
-      signInRegistry(username: String!, password: String!): Registry @auth
-      signOutRegistry: Boolean @auth
-    }
+      extend type Mutation {
+          addRegistry(input: AddRegistryInput): Registry @auth
+          editRegistry(input: EditRegistryInput!): Registry @auth
+          delRegistry(id: ID!): Registry @auth
+          newPassRegistry(id: ID!, password: String!): Registry @auth
+          signUpRegistry(email: String!, username: String!, name: String, password: String!): Registry @auth
+          signInRegistry(username: String!, password: String!): Registry @auth
+          signOutRegistry: Boolean @auth
+      }
 
-    input AddRegistryInput {
-      username: String!
-      orgId: String
-      password: String!
-      surname: String
-      name: String
-      gender: String
-      birth_day: String,
-      birth_city: Int
-      cf: String
-      vat: String
-      nationality: String
-      address: String
-      address_number: String
-      state: String
-      city: String
-      zip: String
-      phone: String
-      cellular: String
-      email: String!
-      pec: String
-      sdi: String
-    }
+      input CynationInput {
+          orgId: String
+          orgName: String
+          orgEmail: String
+      }
 
-    input EditRegistryInput {
-      orgId: String
-      username: String!
-      password: String!
-      surname: String
-      name: String
-      gender: String
-      birth_day: String,
-      birth_city: Int
-      cf: String
-      vat: String
-      nationality: String
-      address: String
-      address_number: String
-      state: String
-      city: String
-      zip: String
-      phone: String
-      cellular: String
-      email: String!
-      pec: String
-      sdi: String
-    }
+      input AddRegistryInput {
+          cynation: CynationInput
+          username: String!
+          password: String!
+          surname: String
+          name: String
+          gender: String
+          birth_day: String,
+          birth_city: Int
+          cf: String
+          vat: String
+          nationality: String
+          address: String
+          address_number: String
+          state: String
+          city: String
+          zip: String
+          phone: String
+          cellular: String
+          email: String!
+          pec: String
+          sdi: String
+      }
 
-    type Registry{
-      id: ID!
-      orgId: String
-      username: String!
-      password: String!
-      surname: String
-      name: String
-      gender: String
-      birth_day: String,
-      birth_city: Int
-      cf: String
-      vat: String
-      nationality: String
-      address: String
-      address_number: String
-      state: String
-      city: String
-      zip: String
-      phone: String
-      cellular: String
-      email: String!
-      pec: String
-      sdi: String
-      createdAt: String!
-      updatedAt: String!
-    }
+      input EditRegistryInput {
+          username: String!
+          password: String!
+          surname: String
+          name: String
+          gender: String
+          birth_day: String,
+          birth_city: Int
+          cf: String
+          vat: String
+          nationality: String
+          address: String
+          address_number: String
+          state: String
+          city: String
+          zip: String
+          phone: String
+          cellular: String
+          email: String!
+          pec: String
+          sdi: String
+      }
+
+      type Cynation {
+          orgId: String
+          orgName: String
+          orgEmail: String
+      }
+
+      type Registry{
+          id: ID!
+          cynation: Cynation
+          username: String!
+          password: String!
+          surname: String
+          name: String
+          gender: String
+          birth_day: String,
+          birth_city: Int
+          cf: String
+          vat: String
+          nationality: String
+          address: String
+          address_number: String
+          state: String
+          city: String
+          zip: String
+          phone: String
+          cellular: String
+          email: String!
+          pec: String
+          sdi: String
+          createdAt: String!
+          updatedAt: String!
+      }
   `
 }
