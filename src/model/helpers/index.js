@@ -1,5 +1,6 @@
 import Joi from 'joi'
 import pickBy from 'lodash/pickBy'
+import isNil from 'lodash/isNil'
 export function updateFields (input, obj, skipObj) {
   for (let o in input) {
     if (skipObj.indexOf(o) === -1) {

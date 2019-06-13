@@ -59,7 +59,8 @@ export function export_resolver (registry) {
   return {
     Query: {
       registries: async (root, args, {req}, info) => {
-        return registry.search({}, notNull(args))
+        const filter = args.filter ? JSON.parse(args.filter) : {}
+        return registry.search(filter)
       },
       registry: (root, {id}, {req}, info) => {
         return registry.byId(id)
@@ -103,7 +104,7 @@ export function export_typeDef (gql) {
       extend type Query {
           registry(id: ID!): Registry @auth
           registry_guest(id: ID!): Registry @guest
-          registries(limit: Int, skip: Int): [Registry!]! @auth
+          registries(filter: String, limit: Int, skip: Int): [Registry!]! @auth
           registries_guest(limit: Int, skip: Int): [Registry!]! @guest
       }
 
