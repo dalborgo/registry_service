@@ -28,8 +28,7 @@ const password = Joi.string().min(8).max(50).regex(/^(?=\S*[a-z])(?=\S*[A-Z]).*$
   }
 })
 const email = Joi.string().email({ minDomainAtoms: 2 }).required().label('Email')
-const username = Joi.string().alphanum().min(4).max(30).required().label('Username')
+const username = Joi.string().regex(/[a-zA-Z0-9._]/).min(4).max(30).required().label('Username')
 export const changeUser = Joi.object().keys({
   email, username, password
 })
-
