@@ -60,7 +60,7 @@ export function export_resolver (registry) {
     Query: {
       registries: async (root, args, {req}, info) => {
         const filter = args.filter ? JSON.parse(args.filter) : {}
-        return registry.search(filter)
+        return registry.search(filter, {sort: ['updatedAt desc']})
       },
       registry: (root, {id}, {req}, info) => {
         return registry.byId(id)
@@ -68,18 +68,18 @@ export function export_resolver (registry) {
     },
     Mutation: {
       delRegistry: async (root, args, {req}, info) => {
-        const user = await registry.byId(args.id)
-        await user.del()
-        return user
+        const reg = await registry.byId(args.id)
+        await reg.del()
+        return reg
       },
       editRegistry: async (root, {input}, {req}, info) => {
-        const user = await Registry.byId(input.username)
-        if (user.email !== input.email) {
-          await registry.check_email(input.email)
+        const reg = await registry.byId(input.id)
+        if (reg.email !== input.email) {
+          await reg.check_email(input.email)
         }
-        updateFields(input, user)
-        await user.commit()
-        return user
+        updateFields(input, reg, ['id'])
+        await reg.commit()
+        return reg
       },
       addRegistry: async (root, {input}, {req}, info) => {
         const {email, username, password} = input
@@ -110,7 +110,7 @@ export function export_typeDef (gql) {
 
       extend type Mutation {
           addRegistry(input: AddRegistryInput): Registry @auth
-          editRegistry(input: EditRegistryInput!): Registry @auth
+          editRegistry(input: EditRegistryInput): Registry @auth
           delRegistry(id: ID!): Registry @auth
           newPassRegistry(id: ID!, password: String!): Registry @auth
           signUpRegistry(email: String!, username: String!, name: String, password: String!): Registry @auth
@@ -149,8 +149,9 @@ export function export_typeDef (gql) {
       }
 
       input EditRegistryInput {
+          id: ID!
+          cynation: CynationInput
           username: String!
-          password: String!
           surname: String
           name: String
           gender: String
