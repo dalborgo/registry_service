@@ -72,6 +72,13 @@ export function export_resolver (registry) {
         await reg.del()
         return reg
       },
+      delFieldRegistry: async (root, args, {req}, info) => {
+        console.log(args)
+        const reg = await registry.byId(args.id)
+        delete reg[args.field]
+        await reg.commit()
+        return reg
+      },
       editRegistry: async (root, {input}, {req}, info) => {
         const reg = await registry.byId(input.id)
         if (reg.email !== input.email) {
@@ -112,6 +119,7 @@ export function export_typeDef (gql) {
           addRegistry(input: AddRegistryInput): Registry @auth
           editRegistry(input: EditRegistryInput): Registry @auth
           delRegistry(id: ID!): Registry @auth
+          delFieldRegistry(id: ID!, field: String!): Registry @auth
           newPassRegistry(id: ID!, password: String!): Registry @auth
           signUpRegistry(email: String!, username: String!, name: String, password: String!): Registry @auth
           signInRegistry(username: String!, password: String!): Registry @auth
