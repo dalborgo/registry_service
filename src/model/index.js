@@ -31,6 +31,9 @@ export function export_model (ottoman, getFunctions) {
     email: 'string',
     pec: 'string',//Se sesso=PG obbligatorio o PEC o codice_destinatario (per fattura elettronica AE)
     sdi: 'string',
+    area: 'string',
+    num_employes: 'integer',
+    year_revenue: 'number',
     createdAt: {type: 'Date', default: Date.now},
     updatedAt: 'Date'
   }, {
@@ -154,6 +157,9 @@ export function export_typeDef (gql) {
           email: String!
           pec: String
           sdi: String
+          area: String
+          num_employes: Int
+          year_revenue: Int
       }
 
       input EditRegistryInput {
@@ -178,6 +184,9 @@ export function export_typeDef (gql) {
           email: String!
           pec: String
           sdi: String
+          area: String
+          num_employes: Int
+          year_revenue: Int
       }
 
       type Cynation {
@@ -209,6 +218,9 @@ export function export_typeDef (gql) {
           email: String!
           pec: String
           sdi: String
+          area: String
+          num_employes: Int
+          year_revenue: Float
           createdAt: String!
           updatedAt: String!
       }
