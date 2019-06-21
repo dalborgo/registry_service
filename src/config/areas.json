@@ -1,0 +1,18 @@
+{
+  "ACT001": "Agricoltura, silvicoltura, pesca",
+  "ACT002": "Industria mineraria (metalli, carbone, petrolio, gas)",
+  "ACT003": "Costruzioni",
+  "ACT004": "Industria manifatturiera (alimentari, tabacco, mobili, technologia, elettronica, Chimica)",
+  "ACT005": "Servizi pubblici (trasporti, energia elettrica, gas, servizi sanitari)",
+  "ACT006": "Informazione (comunicazioni, telecomunicazioni, trasmissioni radiotelevisive, servizi postali)",
+  "ACT007": "Information technology (hardware, software, servizi)",
+  "ACT008": "Vendita all'ingrosso",
+  "ACT009": "Vendita al dettaglio",
+  "ACT010": "Istituzioni finanziarie (banche assicuraioni, emittenti carte di credito, asset management)",
+  "ACT011": "Servizi I (hotel e ristoranti, riparazioni, musei, ricerca)",
+  "ACT012": "Servizi II (Intrattenimento, Servizi IT, Hosting, Web design, Servizi professionali, Studi legali, Consulenza)",
+  "ACT013": "Istruzione (scuole, università)",
+  "ACT014": "Sanità (ospedali, cliniche)",
+  "ACT015": "Amministrazione Pubblica",
+  "ACT016": "Altro"
+}
