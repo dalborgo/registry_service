@@ -129,6 +129,7 @@ export function export_typeDef (gql) {
           signOutRegistry: Boolean @auth
       }
 
+
       input CynationInput {
           orgId: String
           orgName: String
@@ -136,9 +137,10 @@ export function export_typeDef (gql) {
       }
 
       input AddRegistryInput {
-          cynation: CynationInput
-          username: String!
           password: String!
+          cynation: CynationInput
+          #PARTE COMUNE
+          username: String!
           surname: String
           name: String
           gender: String
@@ -165,6 +167,7 @@ export function export_typeDef (gql) {
       input EditRegistryInput {
           id: ID!
           cynation: CynationInput
+          #PARTE COMUNE
           username: String!
           surname: String
           name: String
@@ -197,13 +200,16 @@ export function export_typeDef (gql) {
 
       type Registry{
           id: ID!
-          cynation: Cynation
-          username: String!
           password: String!
+          createdAt: String!
+          updatedAt: String!
+          cynation: Cynation
+          #PARTE COMUNE
+          username: String!
           surname: String
           name: String
           gender: String
-          birth_day: String,
+          birth_day: String
           birth_city: String
           cf: String
           vat: String
@@ -221,8 +227,6 @@ export function export_typeDef (gql) {
           area: String
           num_employes: Int
           year_revenue: Float
-          createdAt: String!
-          updatedAt: String!
       }
   `
 }
