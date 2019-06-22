@@ -1,10 +1,10 @@
 {
   "name": "registry_service",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "push": "yarn version --patch"
   },
   "repository": {
     "type": "git",
