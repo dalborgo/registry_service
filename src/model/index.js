@@ -17,7 +17,7 @@ export function export_model (ottoman, getFunctions) {
     name: 'string', //Se sesso=M,F;PG
     gender: 'string',//enum M=Maschio, F=Femmina, PG=Persona giuridica
     birth_day: 'string',
-    birth_city: 'integer',//Restituito da getComuni
+    birth_city: 'string',//Restituito da getComuni, per ora string
     cf: 'string',//Se sesso=M,F
     vat: 'string',//Se sesso=PG
     nationality: 'string',//Restituito da File excel Tabelle (Cittadinanza)
@@ -142,8 +142,8 @@ export function export_typeDef (gql) {
           surname: String
           name: String
           gender: String
-          birth_day: String,
-          birth_city: Int
+          birth_day: String
+          birth_city: String
           cf: String
           vat: String
           nationality: String
@@ -169,8 +169,8 @@ export function export_typeDef (gql) {
           surname: String
           name: String
           gender: String
-          birth_day: String,
-          birth_city: Int
+          birth_day: String
+          birth_city: String
           cf: String
           vat: String
           nationality: String
@@ -204,7 +204,7 @@ export function export_typeDef (gql) {
           name: String
           gender: String
           birth_day: String,
-          birth_city: Int
+          birth_city: String
           cf: String
           vat: String
           nationality: String
