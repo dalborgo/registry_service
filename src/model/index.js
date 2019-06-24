@@ -33,7 +33,7 @@ export function export_model (ottoman, getFunctions) {
     sdi: 'string',
     area: 'string',
     num_employes: 'integer',
-    year_revenue: 'number',
+    year_revenue: 'integer',
     createdAt: {type: 'Date', default: Date.now},
     updatedAt: 'Date'
   }, {
@@ -110,6 +110,7 @@ export function export_resolver (registry) {
 }
 
 export function export_typeDef (gql) {
+
   return gql`
       extend type Query {
           registry(id: ID!): Registry @auth
@@ -226,7 +227,7 @@ export function export_typeDef (gql) {
           sdi: String
           area: String
           num_employes: Int
-          year_revenue: Float
+          year_revenue: Int
       }
   `
 }
