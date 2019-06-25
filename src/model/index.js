@@ -111,7 +111,32 @@ export function export_resolver (registry) {
 
 export function export_typeDef (gql) {
 
-  return gql`
+  const common = `
+          username: String!
+          surname: String
+          name: String
+          gender: String
+          birth_day: String
+          birth_city: String
+          cf: String
+          vat: String
+          nationality: String
+          address: String
+          address_number: String
+          state: String
+          city: String
+          zip: String
+          phone: String
+          cellular: String
+          email: String!
+          pec: String
+          sdi: String
+          area: String
+          num_employes: Int
+          year_revenue: Int
+  `
+
+  return gql(String.raw`
       extend type Query {
           registry(id: ID!): Registry @auth
           registry_guest(id: ID!): Registry @guest
@@ -140,57 +165,15 @@ export function export_typeDef (gql) {
       input AddRegistryInput {
           password: String!
           cynation: CynationInput
-          #PARTE COMUNE
-          username: String!
-          surname: String
-          name: String
-          gender: String
-          birth_day: String
-          birth_city: String
-          cf: String
-          vat: String
-          nationality: String
-          address: String
-          address_number: String
-          state: String
-          city: String
-          zip: String
-          phone: String
-          cellular: String
-          email: String!
-          pec: String
-          sdi: String
-          area: String
-          num_employes: Int
-          year_revenue: Int
-      }
+          #COMMON PART
+          ${common}
+       }
 
       input EditRegistryInput {
           id: ID!
           cynation: CynationInput
-          #PARTE COMUNE
-          username: String!
-          surname: String
-          name: String
-          gender: String
-          birth_day: String
-          birth_city: String
-          cf: String
-          vat: String
-          nationality: String
-          address: String
-          address_number: String
-          state: String
-          city: String
-          zip: String
-          phone: String
-          cellular: String
-          email: String!
-          pec: String
-          sdi: String
-          area: String
-          num_employes: Int
-          year_revenue: Int
+          #COMMON PART
+          ${common}
       }
 
       type Cynation {
@@ -205,29 +188,8 @@ export function export_typeDef (gql) {
           createdAt: String!
           updatedAt: String!
           cynation: Cynation
-          #PARTE COMUNE
-          username: String!
-          surname: String
-          name: String
-          gender: String
-          birth_day: String
-          birth_city: String
-          cf: String
-          vat: String
-          nationality: String
-          address: String
-          address_number: String
-          state: String
-          city: String
-          zip: String
-          phone: String
-          cellular: String
-          email: String!
-          pec: String
-          sdi: String
-          area: String
-          num_employes: Int
-          year_revenue: Int
+          #COMMON PART
+         ${common}
       }
-  `
+  `)
 }
