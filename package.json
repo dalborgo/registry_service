@@ -1,6 +1,6 @@
 {
   "name": "registry_service",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -22,5 +22,8 @@
     "esm": "^3.2.25",
     "joi": "^14.3.1",
     "lodash": "^4.17.11"
+  },
+  "peerDependencies": {
+    "ottoman": "^1.0.5"
   }
 }
