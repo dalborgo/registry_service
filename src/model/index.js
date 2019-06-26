@@ -1,10 +1,11 @@
 import { hashSync, compare } from 'bcryptjs'
 import Joi from 'joi'
 import { changeUser, clearUser, notNull, updateFields } from './helpers'
+import { getPlugin } from './plugin'
 
 export function export_model (ottoman, getFunctions) {
   const _throw = m => {throw m}
-  const Registry = getFunctions.call(ottoman.model('REGISTRY', {
+  const Registry = getPlugin.call(getFunctions.call(ottoman.model('REGISTRY', {
     code: {type: 'string', readonly: true},
     username: 'string',
     cynation: {
@@ -37,8 +38,13 @@ export function export_model (ottoman, getFunctions) {
     createdAt: {type: 'Date', default: Date.now},
     updatedAt: 'Date'
   }, {
-    id: 'code'
-  }))
+    id: 'code',
+    index: {
+      findByOrgId: {
+        by: 'cynation.orgId'
+      }
+    }
+  })))
 
   Registry.pre('save', function (user, next) {
     //fixme capire come non ricriptare la password
