@@ -1,6 +1,6 @@
 import { hashSync, compare } from 'bcryptjs'
 import Joi from 'joi'
-import { changeUser, clearUser, notNull, updateFields } from './helpers'
+import { changeUser, clearUser, updateFields } from './helpers'
 import { getPlugin } from './plugin'
 
 export function export_model (ottoman, getFunctions) {
@@ -82,7 +82,6 @@ export function export_resolver (registry) {
         return reg
       },
       delFieldRegistry: async (root, args, {req}, info) => {
-        console.log(args)
         const reg = await registry.byId(args.id)
         delete reg[args.field]
         await reg.commit()
@@ -102,7 +101,7 @@ export function export_resolver (registry) {
         await Joi.validate({email, username, password}, changeUser, {abortEarly: false})
         await registry.check_email(email)
         await registry.check_username(username)
-        input.code = input.cf || input.vat || values.username
+        input.code = input.cf || input.vat || input.username
         return registry.createAndSave(clearUser(input))
       },
       newPass: async (root, args, {req}, info) => {
