@@ -33,7 +33,7 @@ export function export_model (ottoman, getFunctions) {
     pec: 'string',//Se sesso=PG obbligatorio o PEC o codice_destinatario (per fattura elettronica AE)
     sdi: 'string',
     area: 'string',
-    num_employes: 'integer',
+    num_employees: 'integer',
     year_revenue: 'integer',
     createdAt: {type: 'Date', default: Date.now},
     updatedAt: 'Date'
@@ -42,6 +42,9 @@ export function export_model (ottoman, getFunctions) {
     index: {
       findByOrgId: {
         by: 'cynation.orgId'
+      },
+      findByEmail: {
+        by: 'email'
       }
     }
   })))
