@@ -76,6 +76,9 @@ export function export_resolver (registry) {
       },
       registry: (root, {id}, {req}, info) => {
         return registry.byId(id)
+      },
+      registry_guest: (root, {id}, {req}, info) => {
+        return registry.byId(id)
       }
     },
     Mutation: {
