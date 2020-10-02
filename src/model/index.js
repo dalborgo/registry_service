@@ -35,6 +35,7 @@ export function export_model (ottoman, getFunctions) {
     area: 'string',
     num_employees: 'integer',
     year_revenue: 'integer',
+    producer: 'string', //partita iva
     createdAt: {type: 'Date', default: Date.now},
     updatedAt: 'Date'
   }, {
