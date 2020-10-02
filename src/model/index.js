@@ -144,6 +144,7 @@ export function export_typeDef (gql) {
           pec: String
           sdi: String
           area: String
+          producer: String
           num_employes: Int
           year_revenue: Int
   `
