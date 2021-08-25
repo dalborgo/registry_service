@@ -49,7 +49,7 @@ export function export_model (ottoman, getFunctions) {
       }
     }
   })))
-
+  
   Registry.pre('save', function (user, next) {
     //fixme capire come non ricriptare la password
     if (this.password && this.password.length !== 60) {
@@ -58,10 +58,10 @@ export function export_model (ottoman, getFunctions) {
     this.updatedAt = new Date()
     next()
   })
-
+  
   Registry.check_username = async username => await Registry.how_many({username}) && _throw(`Duplicated: ${username}`, 'DUPUSERNAME')
   Registry.check_email = async email => await Registry.how_many({email}) && _throw('Duplicated: ' + email) //non ritorno niente ma serve l'await per testare il throw
-
+  
   Registry.prototype.matchesPassword = function (password) {
     return compare(password, this.password)
   }
@@ -111,6 +111,14 @@ export function export_resolver (registry) {
         input.code = input.cf || input.vat || input.username
         return registry.createAndSave(clearUser(input))
       },
+      addRegistry_guest: async (root, {input}, {req}, info) => {
+        const {email, username, password} = input
+        await Joi.validate({email, username, password}, changeUser, {abortEarly: false})
+        await registry.check_email(email)
+        await registry.check_username(username)
+        input.code = input.cf || input.vat || input.username
+        return registry.createAndSave(clearUser(input))
+      },
       newPass: async (root, args, {req}, info) => {
         const user = await registry.byId(args.id)
         updateFields(args, user, ['id'])
@@ -122,7 +130,7 @@ export function export_resolver (registry) {
 }
 
 export function export_typeDef (gql) {
-
+  
   const common = `
           username: String!
           surname: String
@@ -148,7 +156,7 @@ export function export_typeDef (gql) {
           num_employes: Int
           year_revenue: Int
   `
-
+  
   return gql(String.raw`
       extend type Query {
           registry(id: ID!): Registry @auth
@@ -159,6 +167,7 @@ export function export_typeDef (gql) {
 
       extend type Mutation {
           addRegistry(input: AddRegistryInput): Registry @auth
+          addRegistry_guest(input: AddRegistryInput): Registry @guest
           editRegistry(input: EditRegistryInput): Registry @auth
           delRegistry(id: ID!): Registry @auth
           delFieldRegistry(id: ID!, field: String!): Registry @auth
